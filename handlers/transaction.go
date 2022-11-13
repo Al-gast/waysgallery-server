@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -10,6 +12,8 @@ import (
 	"waysgallery/models"
 	"waysgallery/repositories"
 
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
@@ -163,6 +167,11 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 	filepath4 := ""
 	filepath5 := ""
 
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
+
 	if dataUpload != nil {
 		filepath = dataUpload.(string)
 	}
@@ -177,6 +186,18 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 	}
 	if dataUpload5 != nil {
 		filepath5 = dataUpload5.(string)
+	}
+
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	resp, err2 := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "waysgallery"})
+	resp2, _ := cld.Upload.Upload(ctx, filepath2, uploader.UploadParams{Folder: "waysgallery"})
+	resp3, _ := cld.Upload.Upload(ctx, filepath3, uploader.UploadParams{Folder: "waysgallery"})
+	resp4, _ := cld.Upload.Upload(ctx, filepath4, uploader.UploadParams{Folder: "waysgallery"})
+	resp5, _ := cld.Upload.Upload(ctx, filepath5, uploader.UploadParams{Folder: "waysgallery"})
+
+	if err2 != nil {
+		fmt.Println(err2.Error())
 	}
 
 	request := transactiondto.UpdateTransactionRequest{
@@ -197,19 +218,19 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 	}
 
 	if filepath != "" {
-		transaction.Image1 = filepath
+		transaction.Image1 = resp.SecureURL
 	}
 	if filepath2 != "" {
-		transaction.Image2 = filepath2
+		transaction.Image2 = resp2.SecureURL
 	}
 	if filepath3 != "" {
-		transaction.Image3 = filepath3
+		transaction.Image3 = resp3.SecureURL
 	}
 	if filepath4 != "" {
-		transaction.Image4 = filepath4
+		transaction.Image4 = resp4.SecureURL
 	}
 	if filepath5 != "" {
-		transaction.Image5 = filepath5
+		transaction.Image5 = resp5.SecureURL
 	}
 
 	data, err := h.TransactionRepository.UpdateTransaction(transaction, id)
