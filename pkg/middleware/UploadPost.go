@@ -55,9 +55,9 @@ func UploadPost(next http.HandlerFunc) http.HandlerFunc {
 
 		data := tempFile.Name()
 
-		filename := data[8:]
+		// filename := data[8:]
 
-		ctx := context.WithValue(r.Context(), "dataPost", filename)
+		ctx := context.WithValue(r.Context(), "dataPost", data)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
@@ -109,9 +109,9 @@ func UploadPost2(next http.HandlerFunc) http.HandlerFunc {
 
 		data := tempFile.Name()
 
-		filename := data[8:]
+		// filename := data[8:]
 
-		ctx := context.WithValue(r.Context(), "dataPost2", filename)
+		ctx := context.WithValue(r.Context(), "dataPost2", data)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
@@ -163,9 +163,9 @@ func UploadPost3(next http.HandlerFunc) http.HandlerFunc {
 
 		data := tempFile.Name()
 
-		filename := data[8:]
+		// filename := data[8:]
 
-		ctx := context.WithValue(r.Context(), "dataPost3", filename)
+		ctx := context.WithValue(r.Context(), "dataPost3", data)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
@@ -217,9 +217,9 @@ func UploadPost4(next http.HandlerFunc) http.HandlerFunc {
 
 		data := tempFile.Name()
 
-		filename := data[8:]
+		// filename := data[8:]
 
-		ctx := context.WithValue(r.Context(), "dataPost4", filename)
+		ctx := context.WithValue(r.Context(), "dataPost4", data)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
@@ -271,9 +271,9 @@ func UploadPost5(next http.HandlerFunc) http.HandlerFunc {
 
 		data := tempFile.Name()
 
-		filename := data[8:]
+		// filename := data[8:]
 
-		ctx := context.WithValue(r.Context(), "dataPost5", filename)
+		ctx := context.WithValue(r.Context(), "dataPost5", data)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
