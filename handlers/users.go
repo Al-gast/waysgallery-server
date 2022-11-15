@@ -107,8 +107,9 @@ func (h *handlerUser) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	request := userdto.UpdateUserRequest{
-		Name:     r.FormValue("name"),
-		Greeting: r.FormValue("greeting"),
+		Name:      r.FormValue("name"),
+		Greeting:  r.FormValue("greeting"),
+		Following: r.FormValue("following"),
 	}
 
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
